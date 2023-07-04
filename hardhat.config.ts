@@ -64,24 +64,6 @@ const config: HardhatUserConfig = {
           },
         },
       },
-      {
-        version: "0.6.6",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-      {
-        version: "0.5.16",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
     ],
   },
   typechain: {
@@ -93,8 +75,10 @@ const config: HardhatUserConfig = {
     currency: "USD",
     gasPrice: 21,
   },
-  plugins: ["@nomiclabs/hardhat-ethers", "@openzeppelin/hardhat-upgrades"],
+  plugins: ["@nomiclabs/hardhat-ethers", "hardhat-gas-reporter"],
   etherscan: {
     apiKey: "XEAWRP777XXMIXWWNN5TC8ZJJDN6XEZ76Q",
   },
 };
+
+export default config;

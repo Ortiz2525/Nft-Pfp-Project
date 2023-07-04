@@ -21,9 +21,9 @@ describe("NftPfp", function () {
     await NftPfp.deployed();
   });
 
-  it("mint 5000 NFTs", async function () {
+  it("mint 50000 NFTs", async function () {
     this.timeout(600000);
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 5000; i++) {
       let genome = [];
       for (let j = 11; j >= 0; j--) {
         genome.push(Math.floor(Math.random() * (genomeRange[j] + 1)));
@@ -31,10 +31,10 @@ describe("NftPfp", function () {
       await NftPfp.mint(player1.address, genome);
       genomes.push(await NftPfp.encodeGenome(genome));
     }
-    expect(await NftPfp.balanceOf(player1.address)).to.equal(500);
+    expect(await NftPfp.balanceOf(player1.address)).to.equal(5000);
   });
   it("check the genomes", async function () {
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 5000; i++) {
       expect(await NftPfp.genomes(i)[0]).to.equal(await NftPfp.decodeGenome(genomes[i])[0]);
     }
   });

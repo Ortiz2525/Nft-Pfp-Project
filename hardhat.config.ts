@@ -98,33 +98,3 @@ const config: HardhatUserConfig = {
     apiKey: "XEAWRP777XXMIXWWNN5TC8ZJJDN6XEZ76Q",
   },
 };
-
-task("BAD", "This task is broken", async () => {
-  // console.log("123");
-  setTimeout(() => {
-    throw new Error("This task's action returned a promise that resolved before I was thrown");
-  }, 1000);
-});
-
-task("delayed-hello", "Prints 'Hello, World!' after a second", async () => {
-  return new Promise<void>((resolve, reject) => {
-    setTimeout(() => {
-      // console.log("Hello, World!");
-      resolve();
-    }, 1000);
-  });
-});
-
-task("hello", "Prints a greeting")
-  .addOptionalParam("greeting", "The greeting to print", "Hello, World!")
-  .setAction(async ({ greeting }) => console.log(greeting));
-
-task("hello", "Prints 'Hello' multiple times")
-  .addOptionalParam("times", "The number of times to print 'Hello'", 1, types.int)
-  .setAction(async ({ times }) => {
-    for (let i = 0; i < times; i++) {
-      // console.log("Hello");
-    }
-  });
-
-export default config;

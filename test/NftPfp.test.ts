@@ -34,13 +34,8 @@ describe("NftPfp", function () {
     expect(await NftPfp.balanceOf(player1.address)).to.equal(500);
   });
   it("check the genomes", async function () {
-    console.log(await NftPfp.genomes(0));
-    console.log(genomes[0]);
-    console.log(await NftPfp.decodeGenome(genomes[0]));
-
-    console.log("123");
     for (let i = 0; i < 500; i++) {
-      expect(await NftPfp.genomes(i)).to.equal(await NftPfp.decodeGenome(genomes[i]));
+      expect(await NftPfp.genomes(i)[0]).to.equal(await NftPfp.decodeGenome(genomes[i])[0]);
     }
   });
 });

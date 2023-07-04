@@ -34,15 +34,10 @@ contract NftPfp is ERC721, Ownable {
     function decodeGenome(uint128 genome) public view returns (uint8[] memory) {
         uint8[] memory _genome = new uint8[](12);
 
-        console.log("genome: ", genome);
-
         for (uint8 i = 0; i < 12; i++) {
             _genome[11 - i] = uint8(genome & 0xFF);
             genome = genome >> 8;
-            console.log("i: ", i);
-            console.log("genome[i]: ", _genome[i]);
         }
-        console.log("genome: ", genome);
         return _genome;
     }
 }

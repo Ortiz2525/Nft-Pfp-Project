@@ -7,7 +7,7 @@ import "hardhat/console.sol";
 
 contract NftPfp is ERC721, Ownable {
     // tokenId -> genome
-    uint128[] public genomes;
+    uint72[] public genomes;
 
     constructor() ERC721("NftPft", "PFP") {}
 
@@ -19,25 +19,53 @@ contract NftPfp is ERC721, Ownable {
 
     function encodeGenome(
         uint8[] memory _genome
-    ) public pure returns (uint128) {
+    ) public pure returns (uint72 packedGenome) {
         require(_genome.length == 12, "Invalid genome length");
 
-        uint128 genome = 0;
-        for (uint8 i = 0; i < _genome.length; i++) {
-            genome = genome << 8;
-            genome = genome | _genome[i];
-        }
-
-        return genome;
+        packedGenome =
+            (_genome[0] << 59) |
+            (_genome[1] << 54) |
+            (_genome[2] << 50) |
+            (_genome[3] << 44) |
+            (_genome[4] << 40) |
+            (_genome[5] << 33) |
+            (_genome[6] << 27) |
+            (_genome[7] << 21) |
+            (_genome[8] << 14) |
+            (_genome[9] << 10) |
+            (_genome[10] << 5) |
+            _genome[11];
     }
 
-    function decodeGenome(uint128 genome) public view returns (uint8[] memory) {
+    function decodeGenome(
+        uint72 packedGenome
+    ) public view returns (uint8[] memory) {
         uint8[] memory _genome = new uint8[](12);
 
-        for (uint8 i = 0; i < 12; i++) {
-            _genome[11 - i] = uint8(genome & 0xFF);
-            genome = genome >> 8;
-        }
+        _genome[11] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 5;
+        _genome[10] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 5;
+        _genome[9] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 4;
+        _genome[8] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 7;
+        _genome[7] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 6;
+        _genome[6] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 6;
+        _genome[5] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 7;
+        _genome[4] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 4;
+        _genome[3] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 6;
+        _genome[2] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 4;
+        _genome[1] = uint8(packedGenome & 0xFF);
+        packedGenome = packedGenome >> 5;
+        _genome[0] = uint8(packedGenome & 0xFF);
+
         return _genome;
     }
 }

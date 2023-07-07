@@ -29,13 +29,17 @@ describe("NftPfp", function () {
         genome.push(Math.floor(Math.random() * (genomeRange[j] + 1)));
       }
       await NftPfp.mint(player1.address, genome);
-      genomes.push(await NftPfp.encodeGenome(genome));
+      genomes.push(await NftPfp.packGenome(genome));
     }
     expect(await NftPfp.balanceOf(player1.address)).to.equal(5000);
   });
   it("check the genomes", async function () {
     for (let i = 0; i < 5000; i++) {
-      expect(await NftPfp.genomes(i)[0]).to.equal(await NftPfp.decodeGenome(genomes[i])[0]);
+      expect(await NftPfp.genomes(i)[0]).to.equal(await NftPfp.unpackGenome(genomes[i])[0]);
+      expect(await NftPfp.genomes(i)[3]).to.equal(await NftPfp.unpackGenome(genomes[i])[3]);
+      expect(await NftPfp.genomes(i)[5]).to.equal(await NftPfp.unpackGenome(genomes[i])[5]);
+      expect(await NftPfp.genomes(i)[8]).to.equal(await NftPfp.unpackGenome(genomes[i])[8]);
+      expect(await NftPfp.genomes(i)[11]).to.equal(await NftPfp.unpackGenome(genomes[i])[11]);
     }
   });
 });

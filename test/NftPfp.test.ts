@@ -7,9 +7,7 @@ describe("NftPfp", function () {
   let owner: any;
   let player1: any;
   let player2: any;
-  let genomes = [];
-  let unpackedGenomes = [];
-  let genomeRange = [60, 30, 10, 40, 10, 100, 50, 60, 100, 10, 25, 30];
+  const genomeRange = [60, 30, 10, 40, 10, 100, 50, 60, 100, 10, 25, 30];
 
   const makeRandomUnpackedGenome = () => {
     let unpackedGenome = [];
@@ -30,36 +28,48 @@ describe("NftPfp", function () {
     await NftPfp.deployed();
   });
 
-  it("mint 50000 NFTs", async function () {
-    this.timeout(600000);
-    for (let i = 0; i < 5000; i++) {
-      let unpackedGenome = makeRandomUnpackedGenome();
-      await NftPfp.mint(await NftPfp.packGenome(unpackedGenome));
-      genomes.push(await NftPfp.packGenome(unpackedGenome));
-      unpackedGenomes.push(unpackedGenome);
-    }
-  });
-  it("check the genomes", async function () {
-    this.timeout(600000);
-    for (let i = 0; i < 5000; i++) {
-      // const packedGenomeString = (await NftPfp.unpackGenome(await NftPfp.packedGenomes(i))).map(
-      //   (it) => {
-      //     console.log(it);
-      //     it.toNumber();
-      //   }
-      // );
-      // const packedGenomeString1 = unpackedGenomes[i].map((it) => {
-      //   it.toNumber();
-      // });
-      // console.log(packedGenomeString);
-      console.log(i);
-      console.log(unpackedGenomes[i]);
-      console.log(await NftPfp.unpackGenome(await NftPfp.packedGenomes(i)));
-      console.log(genomes[i]);
-      console.log(await NftPfp.packedGenomes(i));
-      expect(await NftPfp.unpackGenome(await NftPfp.packedGenomes(i))).to.deep.eq(
-        unpackedGenomes[i]
-      );
-    }
+  describe("check save4Genomes", function () {
+    let genomes = [];
+    let unpackedGenomes = [];
+    it("mint 50000 NFTs", async function () {
+      this.timeout(600000);
+      for (let i = 0; i < 5000; i++) {
+        let unpackedGenome = makeRandomUnpackedGenome();
+        genomes.push(await NftPfp.packGenome(unpackedGenome));
+        unpackedGenomes.push(unpackedGenome);
+      }
+      for (let i = 0; i < 1250; i++) {
+        // console.log("---------    start        --------");
+        // console.log("i : ", i);
+        const packedGenome0 = await NftPfp.packGenome(unpackedGenomes[i * 4]);
+        const packedGenome1 = await NftPfp.packGenome(unpackedGenomes[i * 4 + 1]);
+        const packedGenome2 = await NftPfp.packGenome(unpackedGenomes[i * 4 + 2]);
+        const packedGenome3 = await NftPfp.packGenome(unpackedGenomes[i * 4 + 3]);
+        const packed4Genome = await NftPfp.packTo4Genome([
+          packedGenome0,
+          packedGenome1,
+          packedGenome2,
+          packedGenome3,
+        ]);
+        await NftPfp.save4Genome(packed4Genome, i);
+        // console.log("packed4Genome : ", packed4Genome);
+        // console.log("packedGenome0 : ", packedGenome0);
+        // console.log("await NftPfp.getPackedGenome(i * 4) : ", await NftPfp.getPackedGenome(i * 4));
+        // console.log("---------    end        --------");
+      }
+    });
+    it("check the genomes", async function () {
+      this.timeout(600000);
+      for (let i = 0; i < 5000; i++) {
+        // console.log(i);
+        // console.log(unpackedGenomes[i]);
+        // console.log(await NftPfp.unpackGenome(await NftPfp.getPackedGenome(i)));
+        // console.log(genomes[i]);
+        // console.log(await NftPfp.getPackedGenome(i));
+        expect(await NftPfp.unpackGenome(await NftPfp.getPackedGenome(i))).to.deep.eq(
+          unpackedGenomes[i]
+        );
+      }
+    });
   });
 });

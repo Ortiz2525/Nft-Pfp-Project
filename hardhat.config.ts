@@ -73,7 +73,13 @@ const config: HardhatUserConfig = {
   gasReporter: {
     enabled: true,
     currency: "USD",
-    gasPrice: 21,
+    gasPrice: 500 * Math.pow(10, 9),
+  },
+  abiExporter: {
+    runOnCompile: true,
+    path: "./abi",
+    clear: true,
+    flat: true,
   },
   plugins: ["@nomiclabs/hardhat-ethers", "hardhat-gas-reporter"],
   etherscan: {

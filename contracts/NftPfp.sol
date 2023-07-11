@@ -1,60 +1,63 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.2;
 
 import "hardhat/console.sol";
 
 contract NftPfp {
     // tokenId -> genome
-    mapping(uint256 => uint256) packed4Genomes;
+    mapping(uint256 => uint256) packedFourGenomes;
 
-    function save4Genome(uint256 _packed4Genome, uint256 index) external {
-        packed4Genomes[index] = _packed4Genome;
+    function saveFourGenome(uint256 _packedFourGenome, uint256 index) external {
+        packedFourGenomes[index] = _packedFourGenome;
     }
 
-    function saveBatch4Genomes(uint256[] memory _packed4Genomes) external {
-        for (uint256 index; index != _packed4Genomes.length; ++index) {
-            packed4Genomes[index] = _packed4Genomes[index];
+    function saveBatchFourGenomes(
+        uint256[] calldata _packedFourGenomes
+    ) external {
+        for (uint256 index; index != _packedFourGenomes.length; ++index) {
+            packedFourGenomes[index] = _packedFourGenomes[index];
         }
     }
 
     function getPackedGenome(
         uint256 id
     ) public view returns (uint64 packedGenome) {
-        uint256 packed4Genome = packed4Genomes[id / 4];
-        packedGenome = uint64((packed4Genome << ((id % 4) * 64)) >> 192);
-        // console.log("packed4Genome : ");
-        // console.log(packed4Genome);
+        uint256 packedFourGenome = packedFourGenomes[id / 4];
+        packedGenome = uint64((packedFourGenome << ((id % 4) * 64)) >> 192);
+        // console.log("packedFourGenome : ");
+        // console.log(packedFourGenome);
         // console.log("packedGenome : ");
         // console.log(packedGenome);
     }
 
-    function packTo4Genome(
-        uint64[] memory packedGenomes
-    ) external view returns (uint256 packed4Genome) {
+    function packToFourGenome(
+        uint64[] calldata packedGenomes
+    ) external pure returns (uint256 packedFourGenome) {
         require(packedGenomes.length == 4, "Invalid packedGenomes length");
-        packed4Genome =
+        packedFourGenome =
             (uint256(packedGenomes[0]) << 192) |
             (uint256(packedGenomes[1]) << 128) |
             (uint256(packedGenomes[2]) << 64) |
             uint256(packedGenomes[3]);
-        // console.log("packed4Genome : ");
-        // console.log(packed4Genome);
+        // console.log("packedFourGenome : ");
+        // console.log(packedFourGenome);
     }
 
-    function unpackFrom4Genome(
-        uint256 packed4Genome
+    function unpackFromFourGenome(
+        uint256 packedFourGenome
     ) external pure returns (uint64[] memory packedGenomes) {
         packedGenomes = new uint64[](4);
-        packedGenomes[3] = uint64(packed4Genome & 0xFFFFFFFFFFFFFFFF);
-        packed4Genome = packed4Genome >> 64;
-        packedGenomes[2] = uint64(packed4Genome & 0xFFFFFFFFFFFFFFFF);
-        packed4Genome = packed4Genome >> 64;
-        packedGenomes[1] = uint64(packed4Genome & 0xFFFFFFFFFFFFFFFF);
-        packed4Genome = packed4Genome >> 64;
-        packedGenomes[0] = uint64(packed4Genome);
+        packedGenomes[3] = uint64(packedFourGenome & 0xFFFFFFFFFFFFFFFF);
+        packedFourGenome = packedFourGenome >> 64;
+        packedGenomes[2] = uint64(packedFourGenome & 0xFFFFFFFFFFFFFFFF);
+        packedFourGenome = packedFourGenome >> 64;
+        packedGenomes[1] = uint64(packedFourGenome & 0xFFFFFFFFFFFFFFFF);
+        packedFourGenome = packedFourGenome >> 64;
+        packedGenomes[0] = uint64(packedFourGenome);
     }
 
     function packGenome(
-        uint64[] memory _genome
+        uint64[] calldata _genome
     ) public pure returns (uint64 packedGenome) {
         require(_genome.length == 12, "Invalid genome length");
 

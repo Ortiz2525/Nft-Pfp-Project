@@ -13,6 +13,7 @@ const config: HardhatUserConfig = {
       // forking: {
       //   url: "https://goerli.infura.io/v3/afee43fb439a4e1794d9acad3e4a95b8",
       // }
+      blockGasLimit: 3000000000,
     },
     bnb: {
       url: "https://bsc-mainnet.public.blastapi.io/",

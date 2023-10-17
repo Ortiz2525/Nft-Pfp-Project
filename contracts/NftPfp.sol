@@ -30,10 +30,10 @@ contract NftPfp {
     ) public view returns (uint64 packedGenome) {
         uint256 packedFourGenome = packedFourGenomes[id / 4];
         packedGenome = uint64((packedFourGenome << ((id % 4) * 64)) >> 192);
-        // console.log("packedFourGenome : ");
-        // console.log(packedFourGenome);
         // console.log("packedGenome : ");
         // console.log(packedGenome);
+        // console.log("packedFourGenome : ");
+        // console.log(packedFourGenome);
     }
 
     function packToFourGenome(

@@ -20,7 +20,7 @@ contract NftPfp {
     }
 
     function saveGenomes(uint256[] calldata _gnomeInputs) external {
-        for (uint256 index = 0; index != _gnomeInputs.length; index ++) {
+        for (uint256 index; index != _gnomeInputs.length; ++ index) {
             packedFourGenomes[index] = _gnomeInputs[index];
         }
     }

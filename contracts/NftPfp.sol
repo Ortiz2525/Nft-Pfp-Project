@@ -19,12 +19,6 @@ contract NftPfp {
         }
     }
 
-    function saveGenomes(uint256[] calldata _gnomeInputs) external {
-        for (uint256 index; index != _gnomeInputs.length; ++ index) {
-            packedFourGenomes[index] = _gnomeInputs[index];
-        }
-    }
-
     function getPackedGenome(
         uint256 id
     ) public view returns (uint64 packedGenome) {

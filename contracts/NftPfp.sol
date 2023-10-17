@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.17;
 
 import "hardhat/console.sol";
 
@@ -16,6 +16,12 @@ contract NftPfp {
     ) external {
         for (uint256 index; index != _packedFourGenomes.length; ++index) {
             packedFourGenomes[index] = _packedFourGenomes[index];
+        }
+    }
+
+    function saveGenomes(uint256[] calldata _gnomeInputs) external {
+        for (uint256 index = 0; index != _gnomeInputs.length; index ++) {
+            packedFourGenomes[index] = _gnomeInputs[index];
         }
     }
 
